@@ -14,11 +14,28 @@ class EventsController < ApplicationController
     # PATCH/PUT /event/1
     def updateEvent
       if @event.update(event_params)
-        render json: @event, status: :ok
-      else
-        render json: @event.errors, status: :bad_request
-      end
+        @json = { participant: @event.participants, 
+          endDate: @event.endDate, 
+          city: @event.city,
+          street: @event.street,
+          description: @event.description,
+          id: @event.id,
+          neighborhood: @event.neighborhood,
+          eventType: @event.eventType,
+          title: @event.title,
+          user: @event.owner,
+          startDate: @event.startDate,
+          referencePoint: @event.referencePoint,
+          status: @event.status}
+
+          render json: @json, status: :ok
+
+          else
+            render json: @event.errors, status: :bad_request
+        end
+     
     end
+
   # GET /event
     def getEvent
       @json = []
@@ -48,37 +65,53 @@ class EventsController < ApplicationController
 
   # GET /event/1
   def getEventById
-    render json: @event, except: [:created_at, :updated_at], status: :ok
+    @json = { participant: @event.participants, 
+      endDate: @event.endDate, 
+      city: @event.city,
+      street: @event.street,
+      description: @event.description,
+      id: @event.id,
+      neighborhood: @event.neighborhood,
+      eventType: @event.eventType,
+      title: @event.title,
+      user: @event.owner,
+      startDate: @event.startDate,
+      referencePoint: @event.referencePoint,
+      status: @event.status
+    }
+    render json: @json, except: [:created_at, :updated_at], status: :ok
   end
 
   # DELETE /event/1
   def destroy
-    if @event.update(status: false) 
-      render json: {msg: "Evento Excluido!" }, status: :ok
+    if (@event.status == false)
+      render json: { message: "Evento jah havia sido Cancelado!"}, status: :ok
+    elsif @event.update(status: false) 
+      render json: { message: "Evento Cancelado!"}, status: :ok
     else
-      render json: @event.errors, status: :bad_request
+      render json: @user.status, status: :bad_request
     end
   end
 
   def searchEvent
       @json = []
+      @json.push(participant = [])
       if @events =  Event::Reducer.apply(params)
       @events.each do |event|
-        @json.push({ participant: event.users, 
-                    endDate: event.endDate, 
-                    city: event.city,
-                    street: event.street,
-                    description: event.description,
-                    id: event.id,
-                    neighborhood: event.neighborhood,
-                    eventType: event.eventType,
-                    title: event.title,
-                    user: event.owner,
-                    startDate: event.startDate,
-                    referencePoint: event.referencePoint,
-                    status: event.status
-                    }
-        )
+      @json.push({
+        participant: event.participants,
+        endDate: event.endDate, 
+        city: event.city,
+        street: event.street,
+        description: event.description,
+        id: event.id,
+        neighborhood: event.neighborhood,
+        eventType: event.eventType,
+        title: event.title,
+        user: event.owner,
+        startDate: event.startDate,
+        referencePoint: event.referencePoint,
+        status: event.status})
       end
     end
       render json: @json, except: [:created_at, :updated_at]
@@ -91,7 +124,7 @@ class EventsController < ApplicationController
             @msgs = Msg.find_by_sql(["
               SELECT 
               msgs.id,
-              msgs.date as messageData,
+              msgs.messageDate,
               msgs.message as message,
               pes.id as userId,
               pes.username as username
@@ -108,14 +141,14 @@ class EventsController < ApplicationController
             @msgs.each do |msg| 
             @json.push({
               id: msg.id,
-              messageData: msg.messageData,
+              messageDate: msg.messageDate,
               message: msg.message,
               userId: msg.userId,
               username: msg.username
             })
           end
 
-            render json: @json.sort_by{|j| j[:messageData]}, except: [:created_at, :updated_at]
+            render json: @json.sort_by{|j| j[:messageDate]}, except: [:created_at, :updated_at]
     end
   
 
@@ -125,24 +158,8 @@ class EventsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_event
-      if event = Event.find(params[:id])
-        @event = { participant: event.users, 
-                    endDate: event.endDate, 
-                    city: event.city,
-                    street: event.street,
-                    description: event.description,
-                    id: event.id,
-                    neighborhood: event.neighborhood,
-                    eventType: event.eventType,
-                    title: event.title,
-                    user: event.owner,
-                    startDate: event.startDate,
-                    referencePoint: event.referencePoint,
-                    status: event.status
-                    }
-      else
-        render json: @event.errors, status: :bad_request
-      end
+      @event = Event.find(params[:id])
+        
     end
 
     # Only allow a trusted parameter "white list" through.

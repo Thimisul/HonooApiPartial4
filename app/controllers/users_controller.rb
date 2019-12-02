@@ -49,25 +49,14 @@ class UsersController < ApplicationController
  
   # Login /user/login
   def login
-  #   if (@status = User.where(email: params[:email], password: params[:password], status: true) != [])
-  #     hmac_secret = 'my$ecretK3y'
-  #     payload = params[:email]
-  #     token = JWT.encode payload, hmac_secret, 'HS256'
-  #     render json: {token: token}
-  #   else
-  #     if(@status = User.where(email: params[:email], password: params[:password], status: false) != [])
-  #     render json: {msg: "Conta Desativada!"}, status: :bad_request # default status: :unprocessable_entity
-  #     else
-  #       render json: {msg: "Login ou senha Incorretos!"}, status: :bad_request
-  #   end
-  # end
-  command = AuthenticateUser.call(params[:email], params[:password])
-  @user =  User.find_by(email: params[:email], password: params[:password], status: true)
-  if command.success?
-    render json: {token: command.result, user: @user}, except: [:created_at, :updated_at, :status, :password]
-  else
-    render json: { error: command.errors }, status: :unauthorized
-  end
+    
+    command = AuthenticateUser.call(params[:email], params[:password])
+    @user =  User.find_by(email: params[:email], password: params[:password], status: true)
+    if command.success?
+      render json: {token: command.result, user: @user}, except: [:created_at, :updated_at, :status, :password]
+    else
+      render json: { error: command.errors }, status: :unauthorized
+    end
   end
 
   private
