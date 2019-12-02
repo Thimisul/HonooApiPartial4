@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  participant: one
+  date: 2019-10-08 03:59:55
+  message: MyString
+
+two:
+  participant: two
+  date: 2019-10-08 03:59:55
+  message: MyString
