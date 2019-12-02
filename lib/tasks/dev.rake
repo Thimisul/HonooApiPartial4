@@ -17,75 +17,76 @@ namespace :dev do
 
     
     show_spinner("Cadastrando Tipos de Eventos...") do
-      eventType = [{name: "Caminhada"},{name: "Corrida"},{name: "Bicicleta"},{name: "Futebol"}]
+      eventType = [{name: "Caminhada"},{name: "Corrida"},{name: "Bicicleta"},{name: "Futebol"},
+                   {name: "Natação"},{name: "Basquete"},{name: "Dança"},{name: "Crossfit"}]
       eventType.each do |eventType|
         EventType.find_or_create_by!(eventType)
       end
     end
 
-    show_spinner("Cadastrando usuarios...") do
+    # show_spinner("Cadastrando usuarios...") do
       
-      100.times do |i|
-        user = Faker::Internet.username
-        if (rand(0..1) == 1)
-          @aux = "M"
-        else
-          @aux = "F"
-        end
-        User.find_or_create_by!(
-          username: user,
-          email: Faker::Internet.email(name: user),
-          password: Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true),
-          birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
-          sex: @aux
-        )
-      end
-    end
+    #   10.times do |i|
+    #     user = Faker::Internet.username
+    #     if (rand(0..1) == 1)
+    #       @aux = "M"
+    #     else
+    #       @aux = "F"
+    #     end
+    #     User.find_or_create_by!(
+    #       username: user,
+    #       email: Faker::Internet.email(name: user),
+    #       password: Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true, special_characters: true),
+    #       birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
+    #       sex: @aux
+    #     )
+    #   end
+    # end
 
 
-    show_spinner("Cadastrando Eventos...") do
-      200.times do |i|
-        startDate = Faker::Time.between(from: 1.year.ago, to: 1.year.from_now)
-        Event.find_or_create_by!(
-          title: Faker::Lorem.sentence,
-          startDate: startDate,
-          endDate: startDate + 2.hours,
-          street: Faker::Address.street_address,
-          neighborhood: Faker::Address.city_suffix,
-          city: Faker::Address.city,
-          referencePoint: Faker::Address.city_prefix,
-          description: Faker::Lorem.paragraph(sentence_count: 2),
-          eventTypeId: rand(1..4),
-          ownerId: rand(1..100),
-          status: true
-        )
-      end
-    end
+    # show_spinner("Cadastrando Eventos...") do
+    #   20.times do |i|
+    #     startDate = Faker::Time.between(from: 1.year.ago, to: 1.year.from_now)
+    #     Event.find_or_create_by!(
+    #       title: Faker::Lorem.sentence,
+    #       startDate: startDate,
+    #       endDate: startDate + 2.hours,
+    #       street: Faker::Address.street_address,
+    #       neighborhood: Faker::Address.city_suffix,
+    #       city: Faker::Address.city,
+    #       referencePoint: Faker::Address.city_prefix,
+    #       description: Faker::Lorem.paragraph(sentence_count: 2),
+    #       eventTypeId: rand(1..4),
+    #       ownerId: rand(1..10),
+    #       status: true
+    #     )
+    #   end
+    # end
 
-    show_spinner("Cadastrando Participantes...") do
+    # show_spinner("Cadastrando Participantes...") do
       
-      200.times do |i|
-        event_id = rand(1..100)
-        eventdate = Event.find(event_id).startDate
+    #   20.times do |i|
+    #     event_id = rand(1..20)
+    #     eventdate = Event.find(event_id).startDate
 
-        Participant.find_or_create_by!(
-          eventoId: event_id,
-          userId: rand(1..100),
-          registrationDate: Faker::Time.between(from: eventdate - rand(1..24).hours, to: eventdate)
-          )
-      end
-    end
+    #     Participant.find_or_create_by!(
+    #       eventoId: event_id,
+    #       userId: rand(1..10),
+    #       registrationDate: Faker::Time.between(from: eventdate - rand(1..24).hours, to: eventdate)
+    #       )
+    #   end
+    # end
 
-    show_spinner("Cadastrando Messages...") do
-      600.times do |i|
-        @participant_id = rand(1..200)
-        Msg.find_or_create_by!(
-          participantId: @participant_id,
-          date: ((Participant.find(@participant_id).registrationDate) + (1.hour) or + (2.hour)),
-          message: Faker::Lorem.paragraphs
-          )
-      end
-    end
+    # show_spinner("Cadastrando Messages...") do
+    #   60.times do |i|
+    #     @participant_id = rand(1..20)
+    #     Msg.find_or_create_by!(
+    #       participantId: @participant_id,
+    #       messageDate: ((Participant.find(@participant_id).registrationDate) + (1.hour) or + (2.hour)),
+    #       message: Faker::Lorem.paragraphs
+    #       )
+    #   end
+    # end
 
   end
 

@@ -16,6 +16,7 @@ gem 'puma', '~> 3.11'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+
 gem 'pry-rails', :group => :development
 # Mostrar loading enquanto faz algum processo no console
 gem 'tty-spinner'
@@ -33,7 +34,7 @@ gem 'simple_command'
 gem 'bcrypt', '~> 3.1.7'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
-
+gem 'rails-i18n'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

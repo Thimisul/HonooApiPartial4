@@ -9,7 +9,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
       t.string :city
       t.string :referencePoint
       t.string :description
-      t.boolean :status
+      t.boolean :status, :default => true
 
       t.timestamps
     end

@@ -14,7 +14,7 @@ class EventsController < ApplicationController
     # PATCH/PUT /event/1
     def updateEvent
       if @event.update(event_params)
-        @json = { participant: @event.participants, 
+        @json = { participant: @event.participants.map{|part| {id: part.id, registrationDate: part.registrationDate, username: User.find(part.userId).username}},
           endDate: @event.endDate, 
           city: @event.city,
           street: @event.street,
@@ -41,7 +41,7 @@ class EventsController < ApplicationController
       @json = []
       if @events = Event.all
       @events.each do |event|
-        @json.push({ participant: event.participants,            
+        @json.push({participant: event.participants.map{|part| {id: part.id, registrationDate: part.registrationDate, username: User.find(part.userId).username}}, 
                     endDate: event.endDate, 
                     city: event.city,
                     street: event.street,
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
 
   # GET /event/1
   def getEventById
-    @json = { participant: @event.participants, 
+    @json = { participant: @event.participants.map{|part| {id: part.id, registrationDate: part.registrationDate, username: User.find(part.userId).username}}, 
       endDate: @event.endDate, 
       city: @event.city,
       street: @event.street,
@@ -99,7 +99,7 @@ class EventsController < ApplicationController
       if @events =  Event::Reducer.apply(params)
       @events.each do |event|
       @json.push({
-        participant: event.participants,
+        participant: event.participants.map{|part| {id: part.id, registrationDate: part.registrationDate, username: User.find(part.userId).username}},
         endDate: event.endDate, 
         city: event.city,
         street: event.street,

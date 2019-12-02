@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_230221) do
     t.string "city"
     t.string "referencePoint"
     t.string "description"
-    t.boolean "status"
+    t.boolean "status", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ownerId"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_230221) do
   end
 
   create_table "participants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.datetime "registrationDate"
+    t.datetime "registrationDate", default: -> { "CURRENT_TIMESTAMP" }
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "userId"

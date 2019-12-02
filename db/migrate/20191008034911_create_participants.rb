@@ -3,7 +3,7 @@ class CreateParticipants < ActiveRecord::Migration[5.2]
     create_table :participants do |t|
       t.references :event, foreign_key: true
       t.references :user, foreign_key: true
-      t.datetime :registrationDate
+      t.datetime :registrationDate,   default: -> { 'CURRENT_TIMESTAMP' }
 
       t.timestamps
     end
